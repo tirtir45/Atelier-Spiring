@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "contrat")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-
 public class Contrat {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idContrat;
@@ -17,4 +18,10 @@ public class Contrat {
     private LocalDate dateSignature;
     private BigDecimal montantTotal;
     private boolean valide;
+
+    @OneToOne(mappedBy = "contrat")
+    private Reservation reservation;
+
+    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Paiement> paiements;
 }
