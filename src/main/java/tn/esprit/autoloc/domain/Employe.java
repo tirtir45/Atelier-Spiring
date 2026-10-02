@@ -7,8 +7,8 @@ import tn.esprit.autoloc.domain.enums.RoleEmploye;
 @Entity
 @Table(name = "employe")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class Employe {
 
+public class Employe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEmploye;
@@ -18,7 +18,4 @@ public class Employe {
 
     @Enumerated(EnumType.STRING)
     private RoleEmploye role;
-
-    @ManyToOne
-    private Agence agence;
 }

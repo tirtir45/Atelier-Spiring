@@ -8,7 +8,6 @@ import java.time.LocalDate;
 @Table(name = "maintenance")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Maintenance {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idMaintenance;
@@ -16,7 +15,4 @@ public class Maintenance {
     private LocalDate dateDebut;
     private LocalDate dateFin;
     private String description;
-
-    @ManyToOne
-    private Vehicule vehicule;
 }
