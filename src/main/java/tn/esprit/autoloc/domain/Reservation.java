@@ -8,8 +8,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "reservation")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-
 public class Reservation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idReservation;
@@ -19,4 +19,13 @@ public class Reservation {
 
     @Enumerated(EnumType.STRING)
     private StatutReservation statut;
+
+    @ManyToOne
+    private Client client;
+
+    @ManyToOne
+    private Vehicule vehicule;
+
+    @OneToOne
+    private Contrat contrat;
 }
