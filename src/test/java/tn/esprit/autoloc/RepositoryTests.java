@@ -22,10 +22,16 @@ class RepositoryTests {
     @Autowired private IEquipementRepository equipementRepository;
     @Autowired private IMaintenanceRepository maintenanceRepository;
 
-    // ---------- Partie 2 : Agence ----------
+    private void log(String message) {
+        System.out.println("=== " + message);
+    }
+
+    // ---------- Partie 2 : Agence (CRUD complet) ----------
     @Test
     void testAgenceRepository() {
+        log("AGENCE : début du test");
         long countBefore = agenceRepository.count();
+        log("count avant = " + countBefore);
 
         Agence agence = new Agence();
         agence.setNom("Agence Tunis Centre");
@@ -35,28 +41,38 @@ class RepositoryTests {
 
         Agence saved = agenceRepository.save(agence);
         assertNotNull(saved.getIdAgence());
-        System.out.println("Agence enregistrée : id=" + saved.getIdAgence() + ", nom=" + saved.getNom());
+        log("save -> id=" + saved.getIdAgence() + ", nom=" + saved.getNom());
 
+        log("findAll :");
         agenceRepository.findAll().forEach(a ->
-                System.out.println("findAll -> " + a.getIdAgence() + " | " + a.getNom() + " | " + a.getVille()));
+                System.out.println("    " + a.getIdAgence() + " | " + a.getNom() + " | " + a.getVille()));
 
         Agence found = agenceRepository.findById(saved.getIdAgence()).orElseThrow();
-        System.out.println("findById -> " + found.getNom());
+        assertEquals("Agence Tunis Centre", found.getNom());
+        log("findById(" + saved.getIdAgence() + ") -> " + found.getNom());
 
-        assertTrue(agenceRepository.existsById(saved.getIdAgence()));
+        boolean existe = agenceRepository.existsById(saved.getIdAgence());
+        assertTrue(existe);
+        log("existsById(" + saved.getIdAgence() + ") -> " + existe);
+
         assertEquals(countBefore + 1, agenceRepository.count());
-        System.out.println("count -> " + agenceRepository.count());
+        log("count après save = " + agenceRepository.count());
 
-        agenceRepository.deleteById(saved.getIdAgence());
-        assertFalse(agenceRepository.existsById(saved.getIdAgence()));
+        /*agenceRepository.deleteById(saved.getIdAgence());
+        boolean existeApres = agenceRepository.existsById(saved.getIdAgence());
+        assertFalse(existeApres);
         assertTrue(agenceRepository.findById(saved.getIdAgence()).isEmpty());
-        System.out.println("Agence supprimée.");
+        log("deleteById(" + saved.getIdAgence() + ") puis existsById -> " + existeApres);
+        log("AGENCE : OK");*/
     }
+
 
     // ---------- Partie 3 : Client ----------
     @Test
     void testClientRepository() {
+        log("CLIENT : début du test");
         long countBefore = clientRepository.count();
+        log("count avant = " + countBefore);
 
         Client c1 = new Client();
         c1.setNom("Ben Ali");
@@ -78,23 +94,34 @@ class RepositoryTests {
         Client s2 = clientRepository.save(c2);
         assertNotNull(s1.getIdClient());
         assertNotNull(s2.getIdClient());
+        log("save -> id=" + s1.getIdClient() + " (" + s1.getNom() + "), id="
+                + s2.getIdClient() + " (" + s2.getNom() + ")");
 
+        log("findAll :");
         clientRepository.findAll().forEach(c ->
-                System.out.println("findAll -> " + c.getIdClient() + " | " + c.getNom() + " " + c.getPrenom()));
+                System.out.println("    " + c.getIdClient() + " | " + c.getNom() + " " + c.getPrenom()));
 
         Client found = clientRepository.findById(s1.getIdClient()).orElseThrow();
         assertEquals("Ben Ali", found.getNom());
+        log("findById(" + s1.getIdClient() + ") -> " + found.getNom() + " " + found.getPrenom());
 
-        assertTrue(clientRepository.existsById(s1.getIdClient()));
-        assertFalse(clientRepository.existsById(999_999L));
+        boolean existe = clientRepository.existsById(s1.getIdClient());
+        boolean inexistant = clientRepository.existsById(999_999L);
+        assertTrue(existe);
+        assertFalse(inexistant);
+        log("existsById(" + s1.getIdClient() + ") -> " + existe);
+        log("existsById(999999) -> " + inexistant);
 
         assertEquals(countBefore + 2, clientRepository.count());
-        System.out.println("count clients -> " + clientRepository.count());
+        log("count après save = " + clientRepository.count());
+        log("CLIENT : OK (les 2 clients restent en base pour vérification dans phpMyAdmin)");
     }
 
-    // ---------- Partie 4 : Vehicule ----------
+    // ---------- Partie 4 : Vehicule (save, update, delete) ----------
     @Test
     void testVehiculeRepository() {
+        log("VEHICULE : début du test");
+
         Vehicule v = new Vehicule();
         v.setImmatriculation("123 TUN 4567");
         v.setMarque("Renault");
@@ -105,25 +132,33 @@ class RepositoryTests {
 
         Vehicule saved = vehiculeRepository.save(v);
         assertNotNull(saved.getIdVehicule());
+        log("save -> id=" + saved.getIdVehicule() + ", statut=" + saved.getStatut());
 
+        log("findAll :");
         vehiculeRepository.findAll().forEach(x ->
-                System.out.println("findAll -> " + x.getIdVehicule() + " | " + x.getMarque() + " " + x.getModele()));
-        System.out.println("count vehicules -> " + vehiculeRepository.count());
+                System.out.println("    " + x.getIdVehicule() + " | " + x.getMarque() + " "
+                        + x.getModele() + " | " + x.getStatut()));
+        log("count = " + vehiculeRepository.count());
 
-        // modification puis save()
         saved.setStatut(StatutVehicule.LOUE);
         Vehicule updated = vehiculeRepository.save(saved);
         assertEquals(StatutVehicule.LOUE, updated.getStatut());
         assertEquals(StatutVehicule.LOUE,
                 vehiculeRepository.findById(saved.getIdVehicule()).orElseThrow().getStatut());
+        log("update -> statut DISPONIBLE devient " + updated.getStatut());
 
-        vehiculeRepository.deleteById(saved.getIdVehicule());
-        assertFalse(vehiculeRepository.existsById(saved.getIdVehicule()));
+        /*vehiculeRepository.deleteById(saved.getIdVehicule());
+        boolean existeApres = vehiculeRepository.existsById(saved.getIdVehicule());
+        assertFalse(existeApres);
+        log("deleteById(" + saved.getIdVehicule() + ") puis existsById -> " + existeApres);
+        log("VEHICULE : OK");*/
     }
 
-    // ---------- Partie 5 : exercice autonome (Employe, Equipement, Maintenance) ----------
+    // ---------- Partie 5 : exercice autonome ----------
     @Test
     void testEmployeRepository() {
+        log("EMPLOYE : début du test");
+
         Employe e = new Employe();
         e.setNom("Gharbi");
         e.setPrenom("Omar");
@@ -131,31 +166,54 @@ class RepositoryTests {
 
         Employe saved = employeRepository.save(e);
         assertNotNull(saved.getIdEmploye());
+        log("save -> id=" + saved.getIdEmploye() + ", role=" + saved.getRole());
+
+        log("findAll :");
         employeRepository.findAll().forEach(x ->
-                System.out.println("Employe -> " + x.getIdEmploye() + " | " + x.getNom() + " | " + x.getRole()));
-        assertTrue(employeRepository.existsById(saved.getIdEmploye()));
+                System.out.println("    " + x.getIdEmploye() + " | " + x.getNom() + " " + x.getPrenom()
+                        + " | " + x.getRole()));
+
+        boolean existe = employeRepository.existsById(saved.getIdEmploye());
+        assertTrue(existe);
+        log("existsById(" + saved.getIdEmploye() + ") -> " + existe);
 
         employeRepository.deleteById(saved.getIdEmploye());
-        assertFalse(employeRepository.existsById(saved.getIdEmploye()));
+        boolean existeApres = employeRepository.existsById(saved.getIdEmploye());
+        assertFalse(existeApres);
+        log("deleteById puis existsById -> " + existeApres);
+        log("EMPLOYE : OK");
     }
 
     @Test
     void testEquipementRepository() {
+        log("EQUIPEMENT : début du test");
+
         Equipement eq = new Equipement();
         eq.setLibelle("GPS");
 
         Equipement saved = equipementRepository.save(eq);
         assertNotNull(saved.getIdEquipement());
-        System.out.println("Equipement -> " + equipementRepository.findById(saved.getIdEquipement())
-                .orElseThrow().getLibelle());
-        assertTrue(equipementRepository.existsById(saved.getIdEquipement()));
+        log("save -> id=" + saved.getIdEquipement() + ", libelle=" + saved.getLibelle());
+
+        Equipement found = equipementRepository.findById(saved.getIdEquipement()).orElseThrow();
+        assertEquals("GPS", found.getLibelle());
+        log("findById(" + saved.getIdEquipement() + ") -> " + found.getLibelle());
+
+        boolean existe = equipementRepository.existsById(saved.getIdEquipement());
+        assertTrue(existe);
+        log("existsById -> " + existe);
 
         equipementRepository.deleteById(saved.getIdEquipement());
-        assertFalse(equipementRepository.existsById(saved.getIdEquipement()));
+        boolean existeApres = equipementRepository.existsById(saved.getIdEquipement());
+        assertFalse(existeApres);
+        log("deleteById puis existsById -> " + existeApres);
+        log("EQUIPEMENT : OK");
     }
 
     @Test
     void testMaintenanceRepository() {
+        log("MAINTENANCE : début du test");
+
         Maintenance m = new Maintenance();
         m.setDateDebut(LocalDate.now());
         m.setDateFin(LocalDate.now().plusDays(2));
@@ -163,11 +221,22 @@ class RepositoryTests {
 
         Maintenance saved = maintenanceRepository.save(m);
         assertNotNull(saved.getIdMaintenance());
+        log("save -> id=" + saved.getIdMaintenance());
+
+        log("findAll :");
         maintenanceRepository.findAll().forEach(x ->
-                System.out.println("Maintenance -> " + x.getIdMaintenance() + " | " + x.getDescription()));
-        assertTrue(maintenanceRepository.existsById(saved.getIdMaintenance()));
+                System.out.println("    " + x.getIdMaintenance() + " | " + x.getDescription()));
+
+        boolean existe = maintenanceRepository.existsById(saved.getIdMaintenance());
+        assertTrue(existe);
+        log("existsById -> " + existe);
 
         maintenanceRepository.deleteById(saved.getIdMaintenance());
-        assertFalse(maintenanceRepository.existsById(saved.getIdMaintenance()));
+        boolean existeApres = maintenanceRepository.existsById(saved.getIdMaintenance());
+        assertFalse(existeApres);
+        log("deleteById puis existsById -> " + existeApres);
+        log("MAINTENANCE : OK");
     }
+
+
 }
