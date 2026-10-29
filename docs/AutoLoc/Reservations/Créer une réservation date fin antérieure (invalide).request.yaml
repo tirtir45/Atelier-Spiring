@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/reservations"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "dateDebut": "2026-11-10",
+      "dateFin": "2026-11-05",
+      "statut": "EN_COURS"
+    }
+order: 4000

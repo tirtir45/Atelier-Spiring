@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/api/equipements/{{equipementId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "libelle": "GPS Navigation HD"
+    }
+order: 5000

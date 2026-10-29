@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/api/agences/{{agenceId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "nom": "Agence Centrale Modifiée",
+      "ville": "Tunis",
+      "adresse": "Avenue Habib Bourguiba",
+      "telephone": "71987654"
+    }
+order: 6000

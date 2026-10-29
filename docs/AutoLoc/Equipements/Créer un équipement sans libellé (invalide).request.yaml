@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/api/equipements"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "libelle": ""
+    }
+order: 4000

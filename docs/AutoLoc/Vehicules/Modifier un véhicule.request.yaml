@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/vehicules/{{vehiculeId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "immatriculation": "210TN1234",
+      "marque": "Renault",
+      "modele": "Clio 5 Intens",
+      "categorie": "ECONOMIQUE",
+      "tarifJournalier": 95.00,
+      "statut": "RESERVE"
+    }
+order: 5000

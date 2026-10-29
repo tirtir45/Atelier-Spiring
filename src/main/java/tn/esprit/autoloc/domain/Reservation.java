@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import tn.esprit.autoloc.domain.enums.StatutReservation;
@@ -21,11 +22,14 @@ public class Reservation {
     private StatutReservation statut;
 
     @ManyToOne
+    @JsonIgnoreProperties("reservations")
     private Client client;
 
     @ManyToOne
+    @JsonIgnoreProperties("reservations")
     private Vehicule vehicule;
 
     @OneToOne
+    @JsonIgnoreProperties("reservation")
     private Contrat contrat;
 }

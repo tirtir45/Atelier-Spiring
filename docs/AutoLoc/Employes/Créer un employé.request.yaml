@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{baseUrl}}/api/employes"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "nom": "Ben Salah",
+      "prenom": "Sami",
+      "role": "AGENT_ACCUEIL",
+      "agence": {
+        "idAgence": 1
+      }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Statut 201", () => {
+          pm.response.to.have.status(201);
+      });
+      var data = pm.response.json();
+      pm.environment.set("employeId", data.idEmploye);
+    language: text/javascript
+order: 2000

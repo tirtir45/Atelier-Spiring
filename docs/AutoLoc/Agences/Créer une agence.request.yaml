@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{baseUrl}}/api/agences"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "nom": "Agence Centrale",
+      "ville": "Tunis",
+      "adresse": "Avenue Habib Bourguiba",
+      "telephone": "71123456"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Statut 201", () => {
+          pm.response.to.have.status(201);
+      });
+      var data = pm.response.json();
+      pm.environment.set("agenceId", data.idAgence);
+    language: text/javascript
+order: 2000

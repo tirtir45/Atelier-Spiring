@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{baseUrl}}/api/clients"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "nom": "Trabelsi",
+      "prenom": "Ines",
+      "email": "ines.trabelsi@example.com",
+      "telephone": "22334455",
+      "numPermis": "B987654",
+      "dateInscription": "2026-02-01"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Statut 201", () => {
+          pm.response.to.have.status(201);
+      });
+      var data = pm.response.json();
+      pm.environment.set("clientId", data.idClient);
+    language: text/javascript
+order: 2000

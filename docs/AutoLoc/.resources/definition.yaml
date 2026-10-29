@@ -1,0 +1,4 @@
+$kind: collection
+description: Collection Postman pour l'Atelier 5 (Spring MVC & SpringDoc OpenAPI)
+variables:
+  baseUrl: http://localhost:8081

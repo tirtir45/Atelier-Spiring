@@ -1,0 +1,7 @@
+# Use this workspace to collaborate
+workspace:
+  id: 9fa3aac1-33b7-419e-8867-f0623871df1d
+
+localResources:
+  collections:
+    - ../docs/AutoLoc

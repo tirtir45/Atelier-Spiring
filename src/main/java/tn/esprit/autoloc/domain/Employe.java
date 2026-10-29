@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import tn.esprit.autoloc.domain.enums.RoleEmploye;
@@ -20,5 +21,6 @@ public class Employe {
     private RoleEmploye role;
 
     @ManyToOne
+    @JsonIgnoreProperties({"employes", "vehicules"})
     private Agence agence;
 }

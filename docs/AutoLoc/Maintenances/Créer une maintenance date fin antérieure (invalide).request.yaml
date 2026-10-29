@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/maintenances"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "dateDebut": "2026-11-10",
+      "dateFin": "2026-11-03",
+      "description": "Test incohérence de dates"
+    }
+order: 4000

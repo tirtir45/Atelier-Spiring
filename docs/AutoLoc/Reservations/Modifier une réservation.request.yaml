@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/reservations/{{reservationId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "dateDebut": "2026-11-01",
+      "dateFin": "2026-11-07",
+      "statut": "CONFIRMEE"
+    }
+order: 5000

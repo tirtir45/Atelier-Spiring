@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/maintenances/{{maintenanceId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "dateDebut": "2026-11-01",
+      "dateFin": "2026-11-04",
+      "description": "Vidange complète, révision et remplacement filtres"
+    }
+order: 5000

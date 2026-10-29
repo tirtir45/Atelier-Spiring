@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -18,5 +19,6 @@ public class Maintenance {
     private String description;
 
     @ManyToOne
+    @JsonIgnoreProperties({"maintenances", "reservations"})
     private Vehicule vehicule;
 }

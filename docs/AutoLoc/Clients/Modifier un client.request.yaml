@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/clients/{{clientId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "nom": "Trabelsi",
+      "prenom": "Ines",
+      "email": "ines.newemail@example.com",
+      "telephone": "22334499",
+      "numPermis": "B987654",
+      "dateInscription": "2026-02-01"
+    }
+order: 5000

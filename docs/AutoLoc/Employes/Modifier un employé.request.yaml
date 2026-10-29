@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/employes/{{employeId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "nom": "Ben Salah",
+      "prenom": "Sami Junior",
+      "role": "GESTIONNAIRE_FLOTTE"
+    }
+order: 5000

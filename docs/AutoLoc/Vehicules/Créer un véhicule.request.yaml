@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{baseUrl}}/api/vehicules"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "immatriculation": "210TN1234",
+      "marque": "Renault",
+      "modele": "Clio 5",
+      "categorie": "ECONOMIQUE",
+      "tarifJournalier": 85.00,
+      "statut": "DISPONIBLE"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Statut 201", () => {
+          pm.response.to.have.status(201);
+      });
+      var data = pm.response.json();
+      pm.environment.set("vehiculeId", data.idVehicule);
+    language: text/javascript
+order: 2000
