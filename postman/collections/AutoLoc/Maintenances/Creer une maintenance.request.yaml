@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/api/maintenances"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "dateDebut": "2026-11-01",
+      "dateFin": "2026-11-05",
+      "description": "Vidange et revision",
+      "vehicule": { "idVehicule": 3 }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Statut 201", () => pm.response.to.have.status(201));
+
+      pm.environment.set("maintenanceId", pm.response.json().idMaintenance);
+    language: text/javascript
+order: 2000

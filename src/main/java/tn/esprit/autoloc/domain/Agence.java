@@ -27,4 +27,5 @@ public class Agence {
     @OneToMany(mappedBy = "agence")
     @JsonIgnore
     private Set<Vehicule> vehicules;
-}!
+
+}

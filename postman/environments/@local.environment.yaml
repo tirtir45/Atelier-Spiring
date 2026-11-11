@@ -2,3 +2,5 @@ name: '@local'
 values:
   - key: baseURL
     value: ''
+  - key: contratId
+    value: ''

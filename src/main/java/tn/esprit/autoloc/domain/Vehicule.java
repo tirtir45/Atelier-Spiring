@@ -40,7 +40,6 @@ public class Vehicule {
     private Agence agence;
 
     @OneToMany(mappedBy = "vehicule")
-    @JsonIgnore
     private Set<Reservation> reservations;
 
     @OneToMany(mappedBy = "vehicule")
@@ -48,5 +47,7 @@ public class Vehicule {
     private Set<Maintenance> maintenances;
 
     @ManyToMany
+    @JsonIgnore
     private Set<Equipement> equipements;
+
 }

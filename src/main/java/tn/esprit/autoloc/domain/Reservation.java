@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "reservation")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Reservation {
 
     @Id
@@ -32,4 +32,42 @@ public class Reservation {
     @OneToOne
     @JsonIgnoreProperties("reservation")
     private Contrat contrat;
+
+    // Helper getter/setter compatible avec les signatures standard getId() / setId()
+    public Long getId() {
+        return this.idReservation;
+    }
+
+    public void setId(Long id) {
+        this.idReservation = id;
+    }
+
+    // Accepte un String ou un Enum pour statut
+    public void setStatut(String statutStr) {
+        if (statutStr != null) {
+            this.statut = StatutReservation.valueOf(statutStr);
+        }
+    }
+
+    public void setStatut(StatutReservation statut) {
+        this.statut = statut;
+    }
+
+    // Extensions du Builder généré par Lombok pour supporter statut(String) et id(Long)
+    public static class ReservationBuilder {
+        public ReservationBuilder statut(String statutStr) {
+            this.statut = (statutStr != null) ? StatutReservation.valueOf(statutStr) : null;
+            return this;
+        }
+
+        public ReservationBuilder statut(StatutReservation statut) {
+            this.statut = statut;
+            return this;
+        }
+
+        public ReservationBuilder id(Long id) {
+            this.idReservation = id;
+            return this;
+        }
+    }
 }

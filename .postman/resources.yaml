@@ -5,3 +5,9 @@ workspace:
 localResources:
   collections:
     - ../docs/AutoLoc
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ../postman/collections/AutoLoc: f48dc920-3416-41d6-8012-19c699be7887

@@ -220,7 +220,7 @@ class ServiceTests {
 
         System.out.println("findAll :");
         contratService.findAll().forEach(x ->
-                System.out.println(x.getIdContrat() + " | " + x.getMontantTotal() + " | valide=" + x.isValide()));
+                System.out.println(x.getIdContrat() + " | " + x.getMontantTotal() + " | valide=" + x.getValide()));
 
         Contrat modif = new Contrat();
         modif.setDateSignature(saved.getDateSignature());
@@ -239,7 +239,5 @@ class ServiceTests {
         assertThrows(ResourceNotFoundException.class, () -> contratService.findById(id));
         System.out.println("deleteById(" + id + ") puis findById -> ResourceNotFoundException");
     }
-
-
 
 }

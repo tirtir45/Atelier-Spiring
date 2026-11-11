@@ -19,7 +19,7 @@ public class Contrat {
 
     private LocalDate dateSignature;
     private BigDecimal montantTotal;
-    private boolean valide;
+    private Boolean valide;
 
     @OneToOne(mappedBy = "contrat")
     @JsonIgnore

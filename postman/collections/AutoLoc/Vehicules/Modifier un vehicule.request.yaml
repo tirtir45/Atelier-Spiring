@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/api/vehicules/{{vehiculeId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "immatriculation": "TN-123-AB",
+      "marque": "Peugeot",
+      "modele": "208",
+      "categorie": "BERLINE",
+      "tarifJournalier": 65.00,
+      "statut": "DISPONIBLE",
+      "agence": { "idAgence": 1 }
+    }
+scripts:
+  - type: afterResponse
+    code: pm.test("Statut 200", () => pm.response.to.have.status(200));
+    language: text/javascript
+order: 6000

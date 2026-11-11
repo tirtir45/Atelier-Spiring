@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/api/reservations"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "dateDebut": "2026-11-10",
+      "dateFin": "2026-11-15",
+      "statut": "EN_ATTENTE",
+      "client": { "idClient": 18 },
+      "vehicule": { "idVehicule": 6 }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Statut 201", () => pm.response.to.have.status(201));
+      pm.environment.set("reservationId", pm.response.json().idReservation);
+    language: text/javascript
+order: 2000

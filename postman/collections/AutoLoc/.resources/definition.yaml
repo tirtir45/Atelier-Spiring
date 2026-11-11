@@ -1,1 +1,4 @@
 $kind: collection
+description: Collection AutoLoc - Atelier 5 - CRUD complet toutes entites
+variables:
+  baseUrl: http://localhost:8081

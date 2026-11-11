@@ -1,0 +1,24 @@
+name: '@local'
+values:
+  - key: baseUrl
+    value: ''
+  - key: contratId
+    value: ''
+  - key: paiementId
+    value: ''
+  - key: agenceId
+    value: ''
+  - key: employeId
+    value: ''
+  - key: clientId
+    value: ''
+  - key: vehiculeId
+    value: ''
+  - key: equipementId
+    value: ''
+  - key: reservationId
+    value: ''
+  - key: maintenanceId
+    value: ''
+  - key: ''
+    value: ''
