@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "paiement")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Paiement {
 
     @Id
@@ -25,4 +25,12 @@ public class Paiement {
     @ManyToOne
     @JsonBackReference("contrat-paiements")
     private Contrat contrat;
+
+    public Long getId() {
+        return this.idPaiement;
+    }
+
+    public void setId(Long id) {
+        this.idPaiement = id;
+    }
 }

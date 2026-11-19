@@ -7,7 +7,7 @@ import tn.esprit.autoloc.domain.enums.RoleEmploye;
 
 @Entity
 @Table(name = "employe")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Employe {
 
     @Id
@@ -23,4 +23,12 @@ public class Employe {
     @ManyToOne
     @JsonIgnoreProperties({"employes", "vehicules"})
     private Agence agence;
+
+    public Long getId() {
+        return this.idEmploye;
+    }
+
+    public void setId(Long id) {
+        this.idEmploye = id;
+    }
 }

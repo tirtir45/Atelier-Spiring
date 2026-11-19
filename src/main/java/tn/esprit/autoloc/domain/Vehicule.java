@@ -1,11 +1,9 @@
 package tn.esprit.autoloc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import tn.esprit.autoloc.domain.enums.CategorieVehicule;
 import tn.esprit.autoloc.domain.enums.StatutVehicule;
 
@@ -18,6 +16,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Vehicule {
 
     @Id
@@ -37,6 +36,7 @@ public class Vehicule {
     private StatutVehicule statut;
 
     @ManyToOne
+    @JsonIgnoreProperties({"vehicules", "employes"})
     private Agence agence;
 
     @OneToMany(mappedBy = "vehicule")
@@ -50,4 +50,11 @@ public class Vehicule {
     @JsonIgnore
     private Set<Equipement> equipements;
 
+    public Long getId() {
+        return this.idVehicule;
+    }
+
+    public void setId(Long id) {
+        this.idVehicule = id;
+    }
 }

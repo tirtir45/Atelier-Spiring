@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "client")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Client {
 
     @Id
@@ -25,4 +25,12 @@ public class Client {
     @OneToMany(mappedBy = "client")
     @JsonIgnore
     private Set<Reservation> reservations;
+
+    public Long getId() {
+        return this.idClient;
+    }
+
+    public void setId(Long id) {
+        this.idClient = id;
+    }
 }

@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "agence")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Agence {
 
     @Id
@@ -28,4 +28,11 @@ public class Agence {
     @JsonIgnore
     private Set<Vehicule> vehicules;
 
+    public Long getId() {
+        return this.idAgence;
+    }
+
+    public void setId(Long id) {
+        this.idAgence = id;
+    }
 }

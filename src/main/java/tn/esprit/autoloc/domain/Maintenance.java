@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "maintenance")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Maintenance {
 
     @Id
@@ -21,4 +21,12 @@ public class Maintenance {
     @ManyToOne
     @JsonIgnoreProperties({"maintenances", "reservations"})
     private Vehicule vehicule;
+
+    public Long getId() {
+        return this.idMaintenance;
+    }
+
+    public void setId(Long id) {
+        this.idMaintenance = id;
+    }
 }

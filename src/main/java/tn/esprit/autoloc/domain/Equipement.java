@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "equipement")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Equipement {
 
     @Id
@@ -20,4 +20,12 @@ public class Equipement {
     @ManyToMany(mappedBy = "equipements")
     @JsonIgnore
     private Set<Vehicule> vehicules;
+
+    public Long getId() {
+        return this.idEquipement;
+    }
+
+    public void setId(Long id) {
+        this.idEquipement = id;
+    }
 }

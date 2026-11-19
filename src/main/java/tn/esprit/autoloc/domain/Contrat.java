@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "contrat")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Contrat {
 
     @Id
@@ -28,4 +28,12 @@ public class Contrat {
     @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("contrat-paiements")
     private Set<Paiement> paiements;
+
+    public Long getId() {
+        return this.idContrat;
+    }
+
+    public void setId(Long id) {
+        this.idContrat = id;
+    }
 }
