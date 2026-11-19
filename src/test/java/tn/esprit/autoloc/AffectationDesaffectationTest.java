@@ -66,9 +66,10 @@ class AffectationDesaffectationTest {
     @DisplayName("Partie 1.5 : Affecter avec identifiant inexistant -> Exception")
     void testAffectationInexistante() {
         Agence agence = agenceRepository.save(Agence.builder().nom("Agence Sousse").ville("Sousse").build());
+        Long idAgence = agence.getIdAgence();
 
         // Véhicule inexistant
-        assertThatThrownBy(() -> vehiculeService.affecterVehiculeAAgence(99999L, agence.getIdAgence()))
+        assertThatThrownBy(() -> vehiculeService.affecterVehiculeAAgence(99999L, idAgence))
                 .isInstanceOf(ResourceNotFoundException.class);
 
         // Agence inexistante
@@ -79,8 +80,9 @@ class AffectationDesaffectationTest {
                 .categorie(CategorieVehicule.CITADINE)
                 .tarifJournalier(new BigDecimal("100.00"))
                 .build());
+        Long idVehicule = vehicule.getIdVehicule();
 
-        assertThatThrownBy(() -> vehiculeService.affecterVehiculeAAgence(vehicule.getIdVehicule(), 99999L))
+        assertThatThrownBy(() -> vehiculeService.affecterVehiculeAAgence(idVehicule, 99999L))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
@@ -147,4 +149,3 @@ class AffectationDesaffectationTest {
         assertThat(desaffecte.getAgence()).isNull();
     }
 }
-
