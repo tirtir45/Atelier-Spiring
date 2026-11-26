@@ -8,9 +8,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
 
-/**
- * Stratégie concrète : Tarif longue durée (séjours >= 7 jours) avec 20% de remise (coefficient 0.80).
- */
 @Component
 public class TarifLongueDureeStrategy implements ITarificationStrategy, TarificationStrategy {
 

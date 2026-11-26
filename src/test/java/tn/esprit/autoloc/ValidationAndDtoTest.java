@@ -15,15 +15,23 @@ import tn.esprit.autoloc.web.dto.*;
 import tn.esprit.autoloc.web.validator.ReservationRequestValidator;
 
 import java.math.BigDecimal;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ValidationAndDtoTest {
 
+    private static final ZoneId ZONE = ZoneId.of("Africa/Tunis");
+    private static final Clock FIXED_CLOCK =
+            Clock.fixed(Instant.parse("2026-11-24T10:00:00Z"), ZONE);
+
     private static Validator beanValidator;
-    private final ReservationRequestValidator springValidator = new ReservationRequestValidator();
+    private final ReservationRequestValidator springValidator =
+            new ReservationRequestValidator(FIXED_CLOCK);
 
     @BeforeAll
     static void init() {
@@ -41,8 +49,9 @@ class ValidationAndDtoTest {
                 .build();
 
         Set<ConstraintViolation<ClientDTO>> violations = beanValidator.validate(dto);
-        assertThat(violations).isNotEmpty();
-        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("email"));
+        assertThat(violations)
+                .isNotEmpty()
+                .anyMatch(v -> v.getPropertyPath().toString().equals("email"));
     }
 
     @Test
@@ -58,8 +67,9 @@ class ValidationAndDtoTest {
                 .build();
 
         Set<ConstraintViolation<VehiculeDTO>> violations = beanValidator.validate(dto);
-        assertThat(violations).isNotEmpty();
-        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("immatriculation"));
+        assertThat(violations)
+                .isNotEmpty()
+                .anyMatch(v -> v.getPropertyPath().toString().equals("immatriculation"));
     }
 
     @Test
@@ -72,8 +82,9 @@ class ValidationAndDtoTest {
                 .build();
 
         Set<ConstraintViolation<PaiementDTO>> violations = beanValidator.validate(dto);
-        assertThat(violations).isNotEmpty();
-        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("montant"));
+        assertThat(violations)
+                .isNotEmpty()
+                .anyMatch(v -> v.getPropertyPath().toString().equals("montant"));
     }
 
     @Test
@@ -87,19 +98,22 @@ class ValidationAndDtoTest {
                 .build();
 
         Set<ConstraintViolation<ReservationRequestDTO>> violations = beanValidator.validate(dto);
-        assertThat(violations).isNotEmpty();
-        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("dateDebut"));
-        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("dateFin"));
+        assertThat(violations)
+                .isNotEmpty()
+                .anyMatch(v -> v.getPropertyPath().toString().equals("dateDebut"))
+                .anyMatch(v -> v.getPropertyPath().toString().equals("dateFin"));
     }
 
     @Test
     @DisplayName("5.6 : Réservation dont dateFin <= dateDebut -> le validateur personnalisé retourne une erreur")
     void testReservationDateFinAnterieureOuEgale() {
+        LocalDate today = LocalDate.now(FIXED_CLOCK);
+
         ReservationRequestDTO dto = ReservationRequestDTO.builder()
                 .clientId(1L)
                 .vehiculeId(2L)
-                .dateDebut(LocalDate.now().plusDays(5))
-                .dateFin(LocalDate.now().plusDays(3)) // Antérieure
+                .dateDebut(today.plusDays(5))
+                .dateFin(today.plusDays(3)) // Antérieure
                 .build();
 
         Errors errors = new BeanPropertyBindingResult(dto, "reservationRequestDTO");
@@ -111,13 +125,33 @@ class ValidationAndDtoTest {
     }
 
     @Test
-    @DisplayName("5.6 : Réservation avec dates cohérentes -> la validation réussit")
-    void testReservationDatesCoherentes() {
+    @DisplayName("5.6 : Réservation avec dateDebut dans le passé -> rejeté")
+    void testReservationDateDebutPassee() {
+        LocalDate today = LocalDate.now(FIXED_CLOCK);
+
         ReservationRequestDTO dto = ReservationRequestDTO.builder()
                 .clientId(1L)
                 .vehiculeId(2L)
-                .dateDebut(LocalDate.now().plusDays(1))
-                .dateFin(LocalDate.now().plusDays(5))
+                .dateDebut(today.minusDays(1))
+                .dateFin(today.plusDays(2))
+                .build();
+
+        Errors errors = new BeanPropertyBindingResult(dto, "reservationRequestDTO");
+        springValidator.validate(dto, errors);
+
+        assertThat(errors.hasFieldErrors("dateDebut")).isTrue();
+    }
+
+    @Test
+    @DisplayName("5.6 : Réservation avec dates cohérentes -> la validation réussit")
+    void testReservationDatesCoherentes() {
+        LocalDate today = LocalDate.now(FIXED_CLOCK);
+
+        ReservationRequestDTO dto = ReservationRequestDTO.builder()
+                .clientId(1L)
+                .vehiculeId(2L)
+                .dateDebut(today.plusDays(1))
+                .dateFin(today.plusDays(5))
                 .build();
 
         Errors errors = new BeanPropertyBindingResult(dto, "reservationRequestDTO");
@@ -126,4 +160,3 @@ class ValidationAndDtoTest {
         assertThat(errors.hasErrors()).isFalse();
     }
 }
-

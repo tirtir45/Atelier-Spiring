@@ -1,12 +1,17 @@
 package tn.esprit.autoloc.legacy;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * AutoLoc v0 : Classe monolithique et problématique représentant la première version
  * de l'application AutoLoc (Atelier 6 - Analyse).
- * 
+ *
  * Cette classe viole plusieurs principes SOLID, notamment le SRP, l'OCP et le DIP.
  */
 public class AutoLocManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AutoLocManager.class);
 
     public void louerVehicule(String typeReservation, int nombreJours, String clientEmail) {
         double prix = 0;
@@ -18,27 +23,22 @@ public class AutoLocManager {
             prix = nombreJours * 150.0;
         }
 
-        System.out.println("Contrat créé");
-        System.out.println("Prix total : " + prix);
+        LOGGER.info("Contrat créé");
+        LOGGER.info("Prix total : {}", prix);
         envoyerEmail(clientEmail);
         enregistrerPaiement();
         sauvegarderContrat();
     }
 
     private void envoyerEmail(String email) {
-        System.out.println("Email envoyé à " + email);
-    }
-
-    private void envoyerSMS(String sms) {
-        System.out.println("SMS envoyé à " + sms);
+        LOGGER.info("Email envoyé à {}", email);
     }
 
     private void sauvegarderContrat() {
-        System.out.println("Contrat sauvegardé");
+        LOGGER.info("Contrat sauvegardé");
     }
 
     private void enregistrerPaiement() {
-        System.out.println("Paiement enregistré");
+        LOGGER.info("Paiement enregistré");
     }
 }
-

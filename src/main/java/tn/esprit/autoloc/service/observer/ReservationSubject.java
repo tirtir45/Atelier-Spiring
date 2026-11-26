@@ -6,11 +6,6 @@ import tn.esprit.autoloc.domain.Reservation;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Sujet observable (GoF Observer) : maintient la liste des observateurs
- * et les notifie lors des changements d'état d'une réservation.
- * Tous les beans IReservationObserver de Spring sont injectés automatiquement.
- */
 @Component
 public class ReservationSubject {
 

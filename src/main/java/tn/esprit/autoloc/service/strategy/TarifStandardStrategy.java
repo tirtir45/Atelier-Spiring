@@ -7,9 +7,6 @@ import tn.esprit.autoloc.domain.Vehicule;
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 
-/**
- * Stratégie concrète : Tarif standard sans remise.
- */
 @Component
 public class TarifStandardStrategy implements ITarificationStrategy, TarificationStrategy {
 

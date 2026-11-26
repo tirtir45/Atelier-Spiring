@@ -19,6 +19,9 @@ import java.util.List;
 @Transactional
 public class EmployeServiceImpl implements IEmployeService {
 
+    private static final String EMPLOYE_INTROUVABLE = "Employé introuvable, id=";
+    private static final String AGENCE_INTROUVABLE = "Agence introuvable, id=";
+
     private final IEmployeRepository employeRepository;
     private final IAgenceRepository agenceRepository;
     private final EmployeMapper employeMapper;
@@ -29,9 +32,7 @@ public class EmployeServiceImpl implements IEmployeService {
         employe.setIdEmploye(null);
 
         if (dto.getAgenceId() != null) {
-            Agence agence = agenceRepository.findById(dto.getAgenceId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Agence introuvable, id=" + dto.getAgenceId()));
-            employe.setAgence(agence);
+            employe.setAgence(trouverAgence(dto.getAgenceId()));
         }
 
         Employe saved = employeRepository.save(employe);
@@ -41,9 +42,7 @@ public class EmployeServiceImpl implements IEmployeService {
     @Override
     @Transactional(readOnly = true)
     public EmployeDTO findById(Long id) {
-        Employe employe = employeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employé introuvable, id=" + id));
-        return employeMapper.toDto(employe);
+        return employeMapper.toDto(trouverEmploye(id));
     }
 
     @Override
@@ -56,17 +55,14 @@ public class EmployeServiceImpl implements IEmployeService {
 
     @Override
     public EmployeDTO update(Long id, EmployeDTO dto) {
-        Employe existant = employeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employé introuvable, id=" + id));
+        Employe existant = trouverEmploye(id);
 
         existant.setNom(dto.getNom());
         existant.setPrenom(dto.getPrenom());
         existant.setRole(dto.getRole());
 
         if (dto.getAgenceId() != null) {
-            Agence agence = agenceRepository.findById(dto.getAgenceId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Agence introuvable, id=" + dto.getAgenceId()));
-            existant.setAgence(agence);
+            existant.setAgence(trouverAgence(dto.getAgenceId()));
         } else {
             existant.setAgence(null);
         }
@@ -78,29 +74,36 @@ public class EmployeServiceImpl implements IEmployeService {
     @Override
     public void deleteById(Long id) {
         if (!employeRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Employé introuvable, id=" + id);
+            throw new ResourceNotFoundException(EMPLOYE_INTROUVABLE + id);
         }
         employeRepository.deleteById(id);
     }
 
     @Override
     public void affecterEmployeAAgence(Long employeId, Long agenceId) {
-        Employe employe = employeRepository.findById(employeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employé introuvable, id=" + employeId));
-        Agence agence = agenceRepository.findById(agenceId)
-                .orElseThrow(() -> new ResourceNotFoundException("Agence introuvable, id=" + agenceId));
+        Employe employe = trouverEmploye(employeId);
+        Agence agence = trouverAgence(agenceId);
         employe.setAgence(agence);
         employeRepository.save(employe);
     }
 
     @Override
     public void desaffecterEmployeDeAgence(Long employeId) {
-        Employe employe = employeRepository.findById(employeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employé introuvable, id=" + employeId));
+        Employe employe = trouverEmploye(employeId);
         if (employe.getAgence() == null) {
             throw new IllegalStateException("L'employé n'est rattaché à aucune agence");
         }
         employe.setAgence(null);
         employeRepository.save(employe);
+    }
+
+    private Employe trouverEmploye(Long id) {
+        return employeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(EMPLOYE_INTROUVABLE + id));
+    }
+
+    private Agence trouverAgence(Long id) {
+        return agenceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(AGENCE_INTROUVABLE + id));
     }
 }

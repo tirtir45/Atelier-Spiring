@@ -6,8 +6,10 @@ import tn.esprit.autoloc.service.strategy.ITarificationStrategy;
 
 import java.time.DayOfWeek;
 import java.time.temporal.ChronoUnit;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,9 @@ import java.util.stream.Collectors;
 @Component
 public class TarificationStrategyFactory {
 
+    private static final Set<DayOfWeek> JOURS_WEEKEND =
+            EnumSet.of(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
+
     private final Map<String, ITarificationStrategy> strategies;
 
     public TarificationStrategyFactory(List<? extends ITarificationStrategy> strategyList) {
@@ -29,8 +34,8 @@ public class TarificationStrategyFactory {
     /**
      * Résout la stratégie tarifaire appropriée en fonction des critères de la réservation :
      * <ul>
-     *   <li>Séjour >= 7 jours : {@code LONGUE_DUREE}</li>
-     *   <li>Séjour <= 3 jours débutant un vendredi, samedi ou dimanche : {@code WEEKEND}</li>
+     *   <li>Séjour &gt;= 7 jours : {@code LONGUE_DUREE}</li>
+     *   <li>Séjour &lt;= 3 jours débutant un vendredi, samedi ou dimanche : {@code WEEKEND}</li>
      *   <li>Autre durée : {@code STANDARD} (stratégie par défaut)</li>
      * </ul>
      */
@@ -54,8 +59,6 @@ public class TarificationStrategyFactory {
         if (reservation.getDateDebut() == null) {
             return false;
         }
-        DayOfWeek debut = reservation.getDateDebut().getDayOfWeek();
-        return debut == DayOfWeek.FRIDAY || debut == DayOfWeek.SATURDAY || debut == DayOfWeek.SUNDAY;
+        return JOURS_WEEKEND.contains(reservation.getDateDebut().getDayOfWeek());
     }
 }
-

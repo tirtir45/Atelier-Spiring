@@ -3,10 +3,6 @@ package tn.esprit.autoloc.service.observer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import tn.esprit.autoloc.domain.Reservation;
-
-/**
- * Observateur concret : notification par SMS (simulée via logs).
- */
 @Slf4j
 @Component
 public class SmsNotificationObserver implements IReservationObserver, ReservationObserver {

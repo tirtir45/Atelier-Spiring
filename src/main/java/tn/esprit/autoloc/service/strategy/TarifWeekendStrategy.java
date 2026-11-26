@@ -8,10 +8,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
 
-/**
- * Stratégie concrète : Tarif week-end (court séjour <= 3 jours commençant le week-end)
- * avec 10% de remise (coefficient 0.90).
- */
 @Component
 public class TarifWeekendStrategy implements ITarificationStrategy, TarificationStrategy {
 

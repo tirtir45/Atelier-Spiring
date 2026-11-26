@@ -1,14 +1,27 @@
 package tn.esprit.autoloc.web.validator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import tn.esprit.autoloc.web.dto.ReservationRequestDTO;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 @Component
 public class ReservationRequestValidator implements Validator {
+
+    private final Clock clock;
+
+    public ReservationRequestValidator() {
+        this(Clock.systemDefaultZone());
+    }
+
+    @Autowired
+    public ReservationRequestValidator(Clock clock) {
+        this.clock = clock != null ? clock : Clock.systemDefaultZone();
+    }
 
     @Override
     public boolean supports(Class<?> classe) {
@@ -21,7 +34,7 @@ public class ReservationRequestValidator implements Validator {
         if (dto.getDateDebut() == null || dto.getDateFin() == null) {
             return; // Les champs obligatoires sont traités par Bean Validation.
         }
-        if (dto.getDateDebut().isBefore(LocalDate.now())) {
+        if (dto.getDateDebut().isBefore(LocalDate.now(clock))) {
             errors.rejectValue("dateDebut",
                     "reservation.dateDebut.passee",
                     "La date de début doit être aujourd'hui ou dans le futur");
@@ -33,4 +46,3 @@ public class ReservationRequestValidator implements Validator {
         }
     }
 }
-

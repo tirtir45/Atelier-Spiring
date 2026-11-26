@@ -4,9 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import tn.esprit.autoloc.domain.Reservation;
 
-/**
- * Observateur concret : notification par email (simulée via logs).
- */
 @Slf4j
 @Component
 public class EmailNotificationObserver implements IReservationObserver, ReservationObserver {

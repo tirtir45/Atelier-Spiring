@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage(),
-                LocalDateTime.now()
+                LocalDateTime.now(ZoneId.systemDefault())
         );
     }
 
@@ -47,7 +48,7 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                LocalDateTime.now()
+                LocalDateTime.now(ZoneId.systemDefault())
         );
     }
 
@@ -57,7 +58,7 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                LocalDateTime.now()
+                LocalDateTime.now(ZoneId.systemDefault())
         );
     }
 }

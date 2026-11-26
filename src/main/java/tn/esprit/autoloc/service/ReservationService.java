@@ -8,6 +8,7 @@ import tn.esprit.autoloc.domain.Reservation;
 import tn.esprit.autoloc.domain.enums.StatutReservation;
 import tn.esprit.autoloc.service.observer.ReservationSubject;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 @Slf4j
@@ -16,26 +17,20 @@ import java.time.LocalDate;
 public class ReservationService {
 
     private final ReservationSubject reservationSubject;
+    private final Clock clock;
 
-    /**
-     * Crée une réservation et notifie tous les observateurs.
-     */
     public Reservation creerReservation(Client client) {
         Reservation reservation = Reservation.builder()
                 .client(client)
-                .dateDebut(LocalDate.now())
+                .dateDebut(LocalDate.now(clock))
                 .statut(StatutReservation.CONFIRMEE.name())
                 .build();
 
-        // Déclenche le process métier via le pattern Observer
         reservationSubject.notifierConfirmation(reservation);
 
         return reservation;
     }
 
-    /**
-     * Annule une réservation existante et notifie tous les observateurs.
-     */
     public Reservation annulerReservation(Reservation reservation) {
         reservation.setStatut(StatutReservation.ANNULEE.name());
         log.info("Reservation #{} annulée pour le client {}",
@@ -47,4 +42,3 @@ public class ReservationService {
         return reservation;
     }
 }
-
