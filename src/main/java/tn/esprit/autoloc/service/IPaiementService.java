@@ -7,4 +7,5 @@ import java.util.List;
 public interface IPaiementService {
     PaiementDTO findById(Long id);
     List<PaiementDTO> findAll();
+    PaiementDTO create(PaiementDTO dto);
 }
